@@ -1,27 +1,30 @@
 import express from "express";
 import cors from "cors";
-
-// import routes from "./app/routes";
 import cookieParser from "cookie-parser";
+import {StatusCodes} from "http-status-codes";
+
+// routes
+import userRoutes from "./routes/user-routes.js";
+import courseRoutes from "./routes/course-routes.js";
 
 const app = express();
 
 // cors
-app.use(cors({origin: "http://localhost:3000/"}));
+app.use(cors({origin: "*"}));
 
 app.use((req, res, next) => {
     res.header({"Access-Control-Allow-Origin": "*"});
     next();
 });
-// cockie perser
+
 app.use(cookieParser());
 
-// body perser
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // use routes
-// app.use("/api/v1", routes);
+app.use("/api/v1", userRoutes);
+app.use("/api/v1", courseRoutes);
 
 app.get("/", (req, res) => {
     res.send(`Server is running at 5000 port`);
